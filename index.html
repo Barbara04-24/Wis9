@@ -1,55 +1,256 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-   <meta http-equiv="refresh" content="5;url=https://s.shopee.co.id/3LPQgQ6NUw">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIDEY</title>
+    <title>VIDEY - Player</title>
     <style>
-        /* Mengatur latar belakang halaman */
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #121212; /* Warna gelap agar fokus ke video */
-            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #0f0f10;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            padding: 15px;
         }
 
-        /* Kontainer Utama Video (Ukuran disesuaikan dengan layar HP) */
+        .video-card {
+            width: 100%;
+            max-width: 420px;
+            background-color: #18181b;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #27272a;
+            padding: 16px;
+        }
+
+        /* --- JUDUL ESTETIK --- */
+        .card-header {
+            margin-bottom: 12px;
+        }
+
+        .brand-title {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(245, 158, 11, 0.2));
+            display: inline-block;
+        }
+
+        /* --- PEMUTAR VIDEO & OVERLAY --- */
         .video-wrapper {
             width: 100%;
-            max-width: 450px; /* Batas maksimal lebar agar proporsional */
             background-color: #000;
-            border-radius: 12px; /* Membuat sudut video sedikit melengkung rapi */
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            position: relative;
+            min-height: 220px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Mengatur Video HTML5 agar Responsif */
         .video-wrapper video {
             width: 100%;
             display: block;
-            object-fit: contain; /* Menjaga rasio video asli */
+            object-fit: contain;
+        }
+
+        /* Overlay Kunci Video */
+        .unlock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 16, 0.92);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .unlock-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .unlock-btn:hover {
+            transform: scale(1.03);
+        }
+
+        .unlock-btn:disabled {
+            background: #52525b;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .action-area {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* --- TOMBOL MONETAG TEKS BERGERAK --- */
+        .btn-running {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 0;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: runningText 12s linear infinite;
+            padding-left: 100%;
+        }
+
+        @keyframes runningText {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .btn-running:hover .marquee-content {
+            animation-play-state: paused;
+        }
+
+        .sub-text {
+            font-size: 11px;
+            color: #a1a1aa;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .btn-shopee {
+            display: block;
+            background-color: #27272a;
+            color: #e4e4e7;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid #3f3f46;
+            transition: background-color 0.2s;
+        }
+
+        .btn-shopee:hover {
+            background-color: #3f3f46;
         }
     </style>
 </head>
 <body>
 
-<div class="video-wrapper">
-    <video controls poster="link-gambar-cover.jpg">
-        <source src="https://github.com/user-attachments/assets/3e084eb6-b453-408b-add4-8a2e120e6a2f" type="video/mp4">
-        Browser Anda tidak mendukung pemutar video ini.
-    </video>
-           <!-- Script Banner (Tepat di Bawah Video) -->
-    <div class="banner-container">
-        <script async="async" data-cfasync="false" src="https://pl29614816.effectivecpmnetwork.com/fcdb30f11d08504931d530873a3c8818/invoke.js"></script>
-<div id="container-fcdb30f11d08504931d530873a3c8818"></div>
+<div class="video-card">
+    <div class="card-header">
+        <h1 class="brand-title">VIDEYVIRAL</h1>
+    </div>
 
+    <div class="video-wrapper">
+        <!-- Overlay Buka Kunci -->
+        <div class="unlock-overlay" id="unlockOverlay">
+            <p style="color: #fff; font-size: 13px; margin-bottom: 12px;">🔒 Video terkunci oleh sponsor</p>
+            <button class="unlock-btn" id="unlockBtn" onclick="startTask()">
+                🔓 Tonton Iklan Singkat untuk Menonton
+            </button>
+        </div>
+
+        <!-- Video Utama -->
+        <video id="myVideo" controls poster="link-gambar-cover.jpg">
+            <source src="ttps://github.com/user-attachments/assets/3e084eb6-b453-408b-add4-8a2e120e6a2f" type="video/mp4">
+            Browser Anda tidak mendukung pemutar video ini.
+        </video>
+    </div>
+
+    <div class="action-area">
+        <a href="https://www.effectivecpmnetwork.com/tpnw86cx5g?key=4fcf0465a14766d5bfc7f998b84886c2" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn-running">
+            <div class="marquee-content">
+                Bantu Konten Ini Tetap Gratis & Lanjutkan
+            </div>
+        </a>
+        
+        <p class="sub-text">
+            Gratis tanpa biaya! Klik tombol di atas untuk melihat iklan sponsor dan membantu kami tetap mengunggah video.
+        </p>
+
+        <a href="https://s.shopee.co.id/70J2Ftio0A" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn-shopee">
+            🛍️ VOCER SHOPEE 90% MINIMAL BELANJA 10RIBU
+        </a>
     </div>
 </div>
 
+<script>
+    const smartlinkUrl = "https://www.effectivecpmnetwork.com/tpnw86cx5g?key=4fcf0465a14766d5bfc7f998b84886c2";
+    let countdown = 5; // Durasi waktu tugas (dalam detik)
+
+    function startTask() {
+        const btn = document.getElementById('unlockBtn');
+        btn.disabled = true;
+
+        // Memulai Timer Countdown
+        const timer = setInterval(() => {
+            btn.innerText = `Memproses... (${countdown} detik)`;
+            countdown--;
+
+            if (countdown < 0) {
+                clearInterval(timer);
+                
+                // Buka Smartlink Adsterra di tab baru
+                window.open(smartlinkUrl, '_blank');
+
+                // Sembunyikan Overlay & Buka Pemutar Video
+                document.getElementById('unlockOverlay').style.display = 'none';
+            }
+        }, 1000);
+    }
+</script>
+
+
+    <script src="https://pl29617731.effectivecpmnetwork.com/35/0c/52/350c523d8293de0adfd851676cea8d6f.js"></script>
+<script async="async" data-cfasync="false" src="https://pl29614816.effectivecpmnetwork.com/fcdb30f11d08504931d530873a3c8818/invoke.js"></script>
+<div id="container-fcdb30f11d08504931d530873a3c8818"></div>
+
 </body>
-</html> 
+</html>
