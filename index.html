@@ -5,179 +5,1362 @@
     <script data-cfasync="false" async type="text/javascript" src="//basionsassay.com/gphYlYxe83cUVK7/150338"></script>
     <script data-cfasync="false" async type="text/javascript" src="//sg.grubblepuffwig.com/rHJNug7ai4ahBEjS/150335"></script>
     <meta name="profiton-domain-verification" content="36f2bbe6bfb9a3d3d7183263275c9dffa50aa2c8f52ffb727c4bca3716850deb" />
- 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIDEY - Video Player</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
+<title>VIDEYVIRAL - Video Player</title>
 
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-        body {
-            background-color: #0f0f10;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 15px;
-        }
+/* =========================
+   VIDEO PLAYER
+========================= */
 
-        .video-card {
-            width: 100%;
-            max-width: 420px;
-            background-color: #18181b;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid #27272a;
-            padding: 16px;
-        }
+.video-container {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+}
 
-        /* --- HEADER --- */
-        .card-header {
-            margin-bottom: 12px;
-            text-align: center;
-        }
+video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+}
 
-        .brand-title {
-            font-size: 18px;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            background: linear-gradient(135deg, #f59e0b, #ef4444);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-        }
+/* =========================
+   OVERLAY
+========================= */
 
-        /* --- VIDEO PLAYER --- */
-        .video-wrapper {
-            width: 100%;
-            background-color: #000;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-            min-height: 220px;
-        }
+.overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.75) 0%,
+            rgba(0,0,0,.15) 18%,
+            transparent 45%,
+            rgba(0,0,0,.2) 65%,
+            rgba(0,0,0,.9) 100%
+        );
+}
 
-        .video-js {
-            width: 100% !important;
-            height: 230px !important;
-            border-radius: 10px;
-        }
+/* =========================
+   TOP BAR
+========================= */
 
-        .action-area {
-            margin-top: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+.topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
 
-        /* --- TOMBOL MONETAG / SPONSOR --- */
-        .btn-sponsor {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #ffffff;
-            text-decoration: none;
-            padding: 14px 16px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 14px;
-            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
-            text-align: center;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+    height: 82px;
 
-        .btn-sponsor:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(245, 158, 11, 0.4);
-        }
+    display: flex;
+    align-items: center;
 
-        .sub-text {
-            font-size: 11px;
-            color: #a1a1aa;
-            text-align: center;
-            line-height: 1.4;
-        }
+    padding: 0 38px;
 
-        .btn-shopee {
-            display: block;
-            background-color: #27272a;
-            color: #e4e4e7;
-            text-decoration: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 13px;
-            text-align: center;
-            font-weight: 500;
-            border: 1px solid #3f3f46;
-            transition: background-color 0.2s;
-        }
+    z-index: 10;
 
-        .btn-shopee:hover {
-            background-color: #3f3f46;
-        }
+    pointer-events: auto;
 
-        .ad-container {
-            width: 100%;
-            min-height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 8px;
-        }
-    </style>
+    background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,.8),
+        rgba(0,0,0,0)
+    );
+}
+
+/* LOGO */
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: white;
+
+    font-size: 25px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.logo-icon {
+    width: 39px;
+    height: 39px;
+
+    border-radius: 11px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(
+        135deg,
+        #ff1744,
+        #ff315d
+    );
+
+    box-shadow: 0 0 20px rgba(255,23,68,.45);
+
+    font-size: 20px;
+}
+
+.logo span {
+    color: #ff1744;
+}
+
+/* SEARCH */
+
+.search {
+    margin-left: auto;
+    margin-right: 35px;
+
+    width: min(42vw, 600px);
+
+    height: 46px;
+
+    border-radius: 30px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 20px;
+
+    background: rgba(30,30,38,.8);
+    border: 1px solid rgba(255,255,255,.08);
+
+    backdrop-filter: blur(15px);
+
+    pointer-events: auto;
+}
+
+.search input {
+    width: 100%;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 15px;
+}
+
+.search input::placeholder {
+    color: #aaa;
+}
+
+.search-icon {
+    color: white;
+    font-size: 21px;
+}
+
+/* MENU */
+
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+
+    color: white;
+
+    font-size: 15px;
+}
+
+.menu-item {
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    opacity: .95;
+
+    transition: .2s;
+}
+
+.menu-item:hover {
+    color: #ff315d;
+}
+
+.avatar {
+    width: 39px;
+    height: 39px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #555,
+            #111
+        );
+
+    border: 2px solid rgba(255,255,255,.7);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+}
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.back {
+    position: absolute;
+
+    top: 110px;
+    left: 40px;
+
+    z-index: 5;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    pointer-events: auto;
+
+    text-shadow: 0 2px 5px #000;
+}
+
+/* =========================
+   CENTER PLAY
+========================= */
+
+.center-play {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 82px;
+    height: 82px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255,23,68,.9);
+
+    color: white;
+
+    font-size: 32px;
+
+    cursor: pointer;
+
+    pointer-events: auto;
+
+    box-shadow:
+        0 0 0 10px rgba(255,255,255,.08),
+        0 15px 50px rgba(0,0,0,.5);
+
+    transition: .25s;
+}
+
+.center-play:hover {
+    transform: translate(-50%, -50%) scale(1.08);
+}
+
+/* =========================
+   BOTTOM CONTROLS
+========================= */
+
+.controls {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 10;
+
+    padding:
+        0
+        38px
+        30px;
+
+    pointer-events: auto;
+}
+
+/* PROGRESS */
+
+.progress-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    color: white;
+
+    font-size: 14px;
+
+    margin-bottom: 18px;
+}
+
+.progress {
+    flex: 1;
+
+    height: 5px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.3);
+
+    cursor: pointer;
+
+    position: relative;
+}
+
+.progress-value {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 0%;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        90deg,
+        #ff1744,
+        #ff496b
+    );
+}
+
+.progress-dot {
+    position: absolute;
+
+    top: 50%;
+
+    left: 0%;
+
+    transform: translate(-50%, -50%);
+
+    width: 15px;
+    height: 15px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    box-shadow: 0 0 8px rgba(255,255,255,.6);
+}
+
+/* CONTROL BAR */
+
+.control-bar {
+    display: flex;
+    align-items: center;
+
+    gap: 22px;
+
+    color: white;
+}
+
+.control-btn {
+    border: 0;
+    background: transparent;
+
+    color: white;
+
+    font-size: 27px;
+
+    cursor: pointer;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: .2s;
+}
+
+.control-btn:hover {
+    color: #ff315d;
+    transform: scale(1.1);
+}
+
+/* VOLUME */
+
+.volume {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.volume input {
+    width: 120px;
+
+    accent-color: #ff1744;
+
+    cursor: pointer;
+}
+
+/* RIGHT CONTROLS */
+
+.right-controls {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 22px;
+}
+
+.quality {
+    border: 1px solid rgba(255,255,255,.4);
+
+    padding: 6px 10px;
+
+    border-radius: 5px;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.loading {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 45px;
+    height: 45px;
+
+    border: 4px solid rgba(255,255,255,.25);
+    border-top-color: #ff1744;
+
+    border-radius: 50%;
+
+    animation: spin 1s linear infinite;
+
+    display: none;
+
+    z-index: 20;
+}
+
+@keyframes spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* =========================
+   HIDE CONTROLS
+========================= */
+
+.video-container.hide-ui .topbar,
+.video-container.hide-ui .controls,
+.video-container.hide-ui .back {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.video-container.hide-ui {
+    cursor: none;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .topbar {
+        height: 65px;
+        padding: 0 16px;
+    }
+
+    .logo {
+        font-size: 18px;
+        gap: 7px;
+    }
+
+    .logo-icon {
+        width: 31px;
+        height: 31px;
+
+        border-radius: 8px;
+
+        font-size: 16px;
+    }
+
+    .search {
+        display: none;
+    }
+
+    .menu {
+        margin-left: auto;
+        gap: 14px;
+    }
+
+    .menu-item span {
+        display: none;
+    }
+
+    .avatar {
+        width: 32px;
+        height: 32px;
+    }
+
+    .back {
+        top: 82px;
+        left: 17px;
+
+        font-size: 14px;
+    }
+
+    .center-play {
+        width: 65px;
+        height: 65px;
+
+        font-size: 25px;
+    }
+
+    .controls {
+        padding:
+            0
+            15px
+            calc(18px + env(safe-area-inset-bottom));
+    }
+
+    .progress-row {
+        gap: 9px;
+
+        font-size: 11px;
+
+        margin-bottom: 12px;
+    }
+
+    .progress {
+        height: 4px;
+    }
+
+    .progress-dot {
+        width: 12px;
+        height: 12px;
+    }
+
+    .control-bar {
+        gap: 13px;
+    }
+
+    .control-btn {
+        font-size: 23px;
+
+        width: 28px;
+        height: 28px;
+    }
+
+    .volume input {
+        width: 70px;
+    }
+
+    .volume {
+        gap: 5px;
+    }
+
+    .right-controls {
+        gap: 12px;
+    }
+
+    .quality {
+        display: none;
+    }
+
+    .right-controls .control-btn:nth-child(1),
+    .right-controls .control-btn:nth-child(2) {
+        display: none;
+    }
+}
+
+/* HP LANDSCAPE */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+    .topbar {
+        height: 55px;
+    }
+
+    .back {
+        top: 70px;
+    }
+
+    .controls {
+        padding-bottom: 12px;
+    }
+
+    .progress-row {
+        margin-bottom: 8px;
+    }
+
+    .center-play {
+        width: 55px;
+        height: 55px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-<div class="video-card">
-    <div class="card-header">
-        <h1 class="brand-title">VIDEY VIRAL</h1>
-    </div>
+<div class="video-container" id="player">
 
-    <div class="video-wrapper">
-        <!-- PEMUTAR VIDEO DENGAN IN-STREAM VAST ADS -->
-        <video id="myVideo" class="video-js vjs-default-skin" controls playsinline poster="link-gambar-cover.jpg">
-            <source src="https://github.com/user-attachments/assets/3e084eb6-b453-408b-add4-8a2e120e6a2f" type="video/mp4">
-            Browser Anda tidak mendukung pemutar video ini.
-        </video>
-    </div>
+    <!-- VIDEO -->
+    <video
+        id="video"
+        preload="metadata"
+        playsinline
+        poster=""
+    >
+        <!-- GANTI URL VIDEO DI SINI -->
+        <source
+            src="https://github.com/user-attachments/assets/3e084eb6-b453-408b-add4-8a2e120e6a2f"
+            type="video/mp4"
+        >
 
-    <div class="action-area">
-        <a href="https://s.shopee.co.id/9KgzHuhJ60" 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           class="btn-sponsor">
-            🚀 Tonton Rekomendasi Hari Ini
-        </a>
-        
-        <p class="sub-text">
-            Saksikan tayangan menarik lainnya melalui tautan resmi mitra kami.
-        </p>
+        Browser kamu tidak mendukung video HTML5.
+    </video>
 
-        <a href="https://s.shopee.co.id/9KgzHuhJ60" 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           class="btn-shopee">
-            🛍️ VOUCHER SHOPEE DISKON HINGGA 90% MIN BELANJA 10K
-        </a>
+    <div class="overlay"></div>
 
-        <div class="ad-container">
-            <!-- Tempat Banner Tambahan -->
+    <!-- =========================
+         TOP BAR
+    ========================== -->
+
+    <div class="topbar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                ▶
+            </div>
+
+            VIDEY<span>VIRAL</span>
+
         </div>
+
+        <div class="search">
+
+            <input
+                type="text"
+                placeholder="Cari video..."
+            >
+
+            <div class="search-icon">
+                ⌕
+            </div>
+
+        </div>
+
+        <div class="menu">
+
+            <div class="menu-item">
+                📺
+                <span>Kategori</span>
+            </div>
+
+            <div class="menu-item">
+                ♡
+                <span>Favorit</span>
+            </div>
+
+            <div class="avatar">
+                👤
+            </div>
+
+        </div>
+
     </div>
+
+    <!-- BACK -->
+
+    <div class="back" onclick="history.back()">
+        ←
+        <span>Kembali</span>
+    </div>
+
+    <!-- CENTER PLAY -->
+
+    <div
+        class="center-play"
+        id="centerPlay"
+        onclick="togglePlay()"
+    >
+        ▶
+    </div>
+
+    <!-- LOADING -->
+
+    <div
+        class="loading"
+        id="loading"
+    ></div>
+
+    <!-- =========================
+         CONTROLS
+    ========================== -->
+
+    <div class="controls">
+
+        <div class="progress-row">
+
+            <span id="currentTime">
+                00:00
+            </span>
+
+            <div
+                class="progress"
+                id="progress"
+            >
+
+                <div
+                    class="progress-value"
+                    id="progressValue"
+                ></div>
+
+                <div
+                    class="progress-dot"
+                    id="progressDot"
+                ></div>
+
+            </div>
+
+            <span id="duration">
+                00:00
+            </span>
+
+        </div>
+
+        <div class="control-bar">
+
+            <!-- PLAY -->
+
+            <button
+                class="control-btn"
+                id="playBtn"
+                onclick="togglePlay()"
+            >
+                ▶
+            </button>
+
+            <!-- NEXT -->
+
+            <button
+                class="control-btn"
+                onclick="skipForward()"
+            >
+                ⏭
+            </button>
+
+            <!-- VOLUME -->
+
+            <div class="volume">
+
+                <button
+                    class="control-btn"
+                    onclick="toggleMute()"
+                    id="volumeBtn"
+                >
+                    🔊
+                </button>
+
+                <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value="1"
+                    id="volume"
+                >
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="right-controls">
+
+                <button
+                    class="control-btn"
+                    onclick="togglePictureInPicture()"
+                    title="Picture in Picture"
+                >
+                    ▣
+                </button>
+
+                <button
+                    class="control-btn"
+                    onclick="toggleFullscreen()"
+                    title="Fullscreen"
+                >
+                    ⛶
+                </button>
+
+                <div
+                    class="quality"
+                    onclick="changeQuality()"
+                >
+                    HD
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
 
+<script>
+
+/* =========================
+   ELEMENT
+========================= */
+
+const player =
+    document.getElementById("player");
+
+const video =
+    document.getElementById("video");
+
+const playBtn =
+    document.getElementById("playBtn");
+
+const centerPlay =
+    document.getElementById("centerPlay");
+
+const progress =
+    document.getElementById("progress");
+
+const progressValue =
+    document.getElementById("progressValue");
+
+const progressDot =
+    document.getElementById("progressDot");
+
+const currentTime =
+    document.getElementById("currentTime");
+
+const duration =
+    document.getElementById("duration");
+
+const volume =
+    document.getElementById("volume");
+
+const volumeBtn =
+    document.getElementById("volumeBtn");
+
+const loading =
+    document.getElementById("loading");
+
+
+/* =========================
+   FORMAT TIME
+========================= */
+
+function formatTime(seconds) {
+
+    if (!isFinite(seconds)) {
+        return "00:00";
+    }
+
+    const minutes =
+        Math.floor(seconds / 60);
+
+    const secs =
+        Math.floor(seconds % 60);
+
+    return (
+        String(minutes).padStart(2, "0")
+        + ":" +
+        String(secs).padStart(2, "0")
+    );
+}
+
+
+/* =========================
+   PLAY / PAUSE
+========================= */
+
+function togglePlay() {
+
+    if (video.paused) {
+
+        video.play();
+
+    } else {
+
+        video.pause();
+
+    }
+
+}
+
+
+/* =========================
+   PLAY EVENT
+========================= */
+
+video.addEventListener(
+    "play",
+    () => {
+
+        playBtn.innerHTML = "❚❚";
+
+        centerPlay.style.display = "none";
+
+    }
+);
+
+
+/* =========================
+   PAUSE EVENT
+========================= */
+
+video.addEventListener(
+    "pause",
+    () => {
+
+        playBtn.innerHTML = "▶";
+
+        centerPlay.style.display = "flex";
+
+    }
+);
+
+
+/* =========================
+   PROGRESS
+========================= */
+
+video.addEventListener(
+    "timeupdate",
+    () => {
+
+        if (!video.duration) return;
+
+        const percent =
+            (video.currentTime /
+            video.duration) * 100;
+
+        progressValue.style.width =
+            percent + "%";
+
+        progressDot.style.left =
+            percent + "%";
+
+        currentTime.textContent =
+            formatTime(video.currentTime);
+
+    }
+);
+
+
+/* =========================
+   DURATION
+========================= */
+
+video.addEventListener(
+    "loadedmetadata",
+    () => {
+
+        duration.textContent =
+            formatTime(video.duration);
+
+    }
+);
+
+
+/* =========================
+   CLICK PROGRESS
+========================= */
+
+progress.addEventListener(
+    "click",
+    function(e) {
+
+        const rect =
+            progress.getBoundingClientRect();
+
+        const percent =
+            (e.clientX - rect.left)
+            / rect.width;
+
+        video.currentTime =
+            percent * video.duration;
+
+    }
+);
+
+
+/* =========================
+   VOLUME
+========================= */
+
+volume.addEventListener(
+    "input",
+    () => {
+
+        video.volume =
+            volume.value;
+
+        if (video.volume === 0) {
+
+            volumeBtn.innerHTML = "🔇";
+
+        } else {
+
+            volumeBtn.innerHTML = "🔊";
+
+        }
+
+    }
+);
+
+
+/* =========================
+   MUTE
+========================= */
+
+function toggleMute() {
+
+    video.muted =
+        !video.muted;
+
+    volumeBtn.innerHTML =
+        video.muted
+        ? "🔇"
+        : "🔊";
+
+}
+
+
+/* =========================
+   SKIP 10 DETIK
+========================= */
+
+function skipForward() {
+
+    video.currentTime += 10;
+
+}
+
+
+/* =========================
+   FULLSCREEN
+========================= */
+
+function toggleFullscreen() {
+
+    if (!document.fullscreenElement) {
+
+        if (player.requestFullscreen) {
+
+            player.requestFullscreen();
+
+        } else if (player.webkitRequestFullscreen) {
+
+            player.webkitRequestFullscreen();
+
+        }
+
+    } else {
+
+        document.exitFullscreen();
+
+    }
+
+}
+
+
+/* =========================
+   PICTURE IN PICTURE
+========================= */
+
+async function togglePictureInPicture() {
+
+    try {
+
+        if (document.pictureInPictureElement) {
+
+            await document.exitPictureInPicture();
+
+        } else {
+
+            await video.requestPictureInPicture();
+
+        }
+
+    } catch (error) {
+
+        console.log(
+            "Picture in Picture tidak tersedia."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   QUALITY
+========================= */
+
+function changeQuality() {
+
+    alert(
+        "Menu kualitas video dapat dihubungkan dengan pilihan 360p, 480p, 720p, 1080p, atau 4K."
+    );
+
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+video.addEventListener(
+    "waiting",
+    () => {
+
+        loading.style.display =
+            "block";
+
+    }
+);
+
+video.addEventListener(
+    "playing",
+    () => {
+
+        loading.style.display =
+            "none";
+
+    }
+);
+
+
+/* =========================
+   DOUBLE CLICK FULLSCREEN
+========================= */
+
+video.addEventListener(
+    "dblclick",
+    () => {
+
+        toggleFullscreen();
+
+    }
+);
+
+
+/* =========================
+   KEYBOARD
+========================= */
+
+document.addEventListener(
+    "keydown",
+    (e) => {
+
+        if (e.code === "Space") {
+
+            e.preventDefault();
+
+            togglePlay();
+
+        }
+
+        if (e.key === "ArrowRight") {
+
+            video.currentTime += 10;
+
+        }
+
+        if (e.key === "ArrowLeft") {
+
+            video.currentTime -= 10;
+
+        }
+
+        if (e.key === "ArrowUp") {
+
+            video.volume =
+                Math.min(
+                    1,
+                    video.volume + .1
+                );
+
+            volume.value =
+                video.volume;
+
+        }
+
+        if (e.key === "ArrowDown") {
+
+            video.volume =
+                Math.max(
+                    0,
+                    video.volume - .1
+                );
+
+            volume.value =
+                video.volume;
+
+        }
+
+        if (e.key === "f") {
+
+            toggleFullscreen();
+
+        }
+
+        if (e.key === "m") {
+
+            toggleMute();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   AUTO HIDE UI
+========================= */
+
+let hideTimer;
+
+function resetUI() {
+
+    player.classList.remove(
+        "hide-ui"
+    );
+
+    clearTimeout(hideTimer);
+
+    hideTimer =
+        setTimeout(() => {
+
+            if (!video.paused) {
+
+                player.classList.add(
+                    "hide-ui"
+                );
+
+            }
+
+        }, 3500);
+
+}
+
+player.addEventListener(
+    "mousemove",
+    resetUI
+);
+
+player.addEventListener(
+    "touchstart",
+    resetUI
+);
+
+video.addEventListener(
+    "play",
+    resetUI
+);
+
+
+/* =========================
+   MOBILE TAP
+========================= */
+
+let lastTap = 0;
+
+video.addEventListener(
+    "click",
+    () => {
+
+        const now =
+            new Date().getTime();
+
+        if (
+            now - lastTap < 300
+        ) {
+
+            toggleFullscreen();
+
+        } else {
+
+            togglePlay();
+
+        }
+
+        lastTap = now;
+
+    }
+);
+
+
+/* =========================
+   INITIAL
+========================= */
+
+video.volume = 1;
+
+resetUI();
+
+</script>
 
 </body>
 </html>
